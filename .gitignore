@@ -1,0 +1,55 @@
+# Byte编译的Python文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 缓存和日志文件
+*.log
+*.pot
+*.pid
+*.gz
+*.swp
+*.swo
+.DS_Store
+
+# 开发工具文件
+.idea/
+.vscode/
+*.iml
+
+# 数据库和测试结果
+*.sqlite3
+*.db
+*.sql
+*.tgz
+*.tar.gz
+*.zip
+
+# 单元测试和覆盖率结果
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# 构建和分发
+*.egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+dist/
+build/
+*.wheel
+
+# Jupyter Notebook的检查点
+.ipynb_checkpoints
+
+# PyCharm和其他IDE临时文件
+*.idea/
+*.ipr
+*.iws
+*.bak
+
