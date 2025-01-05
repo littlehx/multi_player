@@ -5,7 +5,13 @@
 # @Author    :littlehx
 # @Desc      :
 import logging
+import os
+import traceback
+from curses import wrapper
 from datetime import datetime
+from functools import wraps
+
+from config.public_config import LOG_DIR
 
 
 def setup_logger(log_file):
@@ -35,8 +41,19 @@ def setup_logger(log_file):
     return logger
 
 # 使用示例
-log_file = datetime.now().strftime('日志_%Y_%m_%d') + '.log'
-logger = setup_logger(log_file)
+log_path = os.path.join(LOG_DIR,datetime.now().strftime('日志_%Y_%m_%d') + '.log')
+logger = setup_logger(log_path)
 
-logger.info('This is an info message.')
-logger.error('This is an error message.')
+def log_exception(func):
+    @wraps(func)
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            # 记录错误堆栈信息到日志
+            error_message = f"Exception in function '{func.__name__}': {str(e)}"
+            error_stack = traceback.format_exc()
+            logger.error(f"{error_message}\n{error_stack}")
+            # 继续抛出异常，以便调用者可处理
+            raise e
+    return inner
