@@ -7,11 +7,10 @@
 import logging
 import os
 import traceback
-from curses import wrapper
 from datetime import datetime
 from functools import wraps
 
-from config.public_config import LOG_DIR
+from src.config.public_config import LOG_DIR
 
 
 def setup_logger(log_file):
