@@ -6,9 +6,11 @@
 # @Desc      :
 import os
 from os.path import join, dirname, abspath
+from pathlib import Path
 
-APP_PATH = dirname(dirname(abspath(__file__)))
-DATA_DIR = join(APP_PATH,"data") # 放置生成的数据文件夹路径
+BASE_DIR = Path(dirname(dirname(abspath(__file__)))).parent # 项目入口文件夹)
+DATA_DIR = join(BASE_DIR, "data") # 放置生成的数据文件夹路径
+SRC_DIR = BASE_DIR / 'src'
 os.makedirs(DATA_DIR, exist_ok=True)
-LOG_DIR= join(APP_PATH,"logs")
+LOG_DIR= join(BASE_DIR, "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
