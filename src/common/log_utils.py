@@ -13,34 +13,62 @@ from functools import wraps
 from src.config.public_config import LOG_DIR
 
 
+def setup_global_logging(log_file):
+    # 移除所有已存在的处理器（避免重复日志）
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+
+    logging.root.setLevel(logging.DEBUG)
+
+    # 文件处理器
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.DEBUG)
+    # 控制台处理器
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+    # 格式
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    # 添加到 root logger
+    logging.root.addHandler(file_handler)
+    logging.root.addHandler(console_handler)
+
+
+log_path = os.path.join(LOG_DIR,datetime.now().strftime('日志_%Y_%m_%d') + '.log')
+
+# 一般在入口处调用一次
+setup_global_logging(log_path)
+
+
 def setup_logger(log_file):
     # 创建一个日志记录器对象
     logger = logging.getLogger('my_logger')
     logger.setLevel(logging.DEBUG)  # 设置日志级别
 
-    # 创建一个用于写入日志文件的处理器
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setLevel(logging.DEBUG)
-
-    # 创建一个用于标准输出流的处理器
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.DEBUG)
-
-    # 创建日志格式器
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    # 将格式器添加到处理器
-    file_handler.setFormatter(formatter)
-    console_handler.setFormatter(formatter)
-
-    # 将处理器添加到记录器
-    logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
+    # # 创建一个用于写入日志文件的处理器
+    # file_handler = logging.FileHandler(log_file)
+    # file_handler.setLevel(logging.DEBUG)
+    #
+    # # 创建一个用于标准输出流的处理器
+    # console_handler = logging.StreamHandler()
+    # console_handler.setLevel(logging.DEBUG)
+    #
+    # # 创建日志格式器
+    # formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    #
+    # # 将格式器添加到处理器
+    # file_handler.setFormatter(formatter)
+    # console_handler.setFormatter(formatter)
+    #
+    # # 将处理器添加到记录器
+    # logger.addHandler(file_handler)
+    # logger.addHandler(console_handler)
 
     return logger
 
 # 使用示例
-log_path = os.path.join(LOG_DIR,datetime.now().strftime('日志_%Y_%m_%d') + '.log')
 logger = setup_logger(log_path)
 
 def log_exception(func):
