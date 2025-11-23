@@ -6,11 +6,13 @@
 # @Desc      :
 import logging
 import os
+import time
 import traceback
-from datetime import datetime
 from functools import wraps
+from logging.handlers import TimedRotatingFileHandler
 
-from src.config.public_config import LOG_DIR
+from src.config import env
+
 
 
 def setup_global_logging(log_file):
@@ -20,9 +22,20 @@ def setup_global_logging(log_file):
 
     logging.root.setLevel(logging.DEBUG)
 
-    # 文件处理器
-    file_handler = logging.FileHandler(log_file)
+    # 定时切割处理器——每天生成一个新文件，保留30天的日志
+    file_handler = TimedRotatingFileHandler(
+        log_file,
+        when='midnight',       # 每天午夜切分
+        interval=1,            # 间隔一天
+        backupCount=30,        # 最多保留30个文件
+        encoding='utf-8',      # 推荐加上编码
+        utc=False              # 使用本地时间
+    )
     file_handler.setLevel(logging.DEBUG)
+
+    # 文件处理器
+    # file_handler = logging.FileHandler(log_file)
+    # file_handler.setLevel(logging.DEBUG)
     # 控制台处理器
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
@@ -36,7 +49,7 @@ def setup_global_logging(log_file):
     logging.root.addHandler(console_handler)
 
 
-log_path = os.path.join(LOG_DIR,datetime.now().strftime('日志_%Y_%m_%d') + '.log')
+log_path = os.path.join(env.LOG_DIR, 'main.log')
 
 # 一般在入口处调用一次
 setup_global_logging(log_path)
@@ -75,7 +88,11 @@ def log_exception(func):
     @wraps(func)
     def inner(*args, **kwargs):
         try:
-            return func(*args, **kwargs)
+            start = time.time()
+            ret =  func(*args, **kwargs)
+            end = time.time()
+            logger.debug(f"func {func.__name__} takes {end - start} seconds")
+            return ret
         except Exception as e:
             # 记录错误堆栈信息到日志
             error_message = f"Exception in function '{func.__name__}': {str(e)}"

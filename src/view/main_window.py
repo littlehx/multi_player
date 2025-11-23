@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGraphicsView, QHBoxLayout, QHeaderView,
     QLabel, QMainWindow, QMenuBar, QSizePolicy,
-    QSplitter, QStatusBar, QTableWidgetItem, QTreeView,
+    QSplitter, QStatusBar, QTableWidget, QTableWidgetItem,
     QVBoxLayout, QWidget)
 
 from src.components.FileExplorerView import FileExplorerView
@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
         self.label = QLabel(self.splitter)
         self.label.setObjectName(u"label")
         self.splitter.addWidget(self.label)
-        self.file_view_1 = QTreeView(self.splitter)
+        self.file_view_1 = FileExplorerView(self.splitter)
         self.file_view_1.setObjectName(u"file_view_1")
         self.splitter.addWidget(self.file_view_1)
 
@@ -69,7 +69,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.tableWidget = FileExplorerView(self.verticalLayoutWidget_2)
+        self.tableWidget = QTableWidget(self.verticalLayoutWidget_2)
         self.tableWidget.setObjectName(u"tableWidget")
 
         self.horizontalLayout.addWidget(self.tableWidget)

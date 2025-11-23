@@ -77,6 +77,11 @@ class _Settings(object):
         logging.getLogger("Settings").debug(f"Settings path: {settings_path}")
 
     def get(self, setting):
+        if setting not in _default_settings.keys(): # 兼容没有预设置值和类型的情况
+            return self.settings.value(
+                setting
+            )
+
         setting_type = type(_default_settings[setting])
 
         if issubclass(setting_type, Enum):
@@ -90,13 +95,15 @@ class _Settings(object):
         )
 
     def set(self, setting_name, setting_value):
-        setting_type = type(_default_settings[setting_name])
+        if setting_name  in _default_settings.keys():
+            setting_type = type(_default_settings[setting_name])
 
-        if setting_type != type(setting_value):  # noqa: WPS516
-            raise ValueError(
-                f"Setting {setting_name} is of type {setting_type}"
-                f" but value is of type {type(setting_value)}"
-            )
+            if setting_type != type(setting_value):  # noqa: WPS516
+                raise ValueError(
+                    f"Setting {setting_name} is of type {setting_type}"
+                    f" but value is of type {type(setting_value)}"
+                )
+
 
         setting_value = self._get_storage_value(setting_value)
 

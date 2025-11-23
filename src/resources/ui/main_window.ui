@@ -32,7 +32,7 @@
             <string>一级菜单:单选文件夹</string>
            </property>
           </widget>
-          <widget class="QTreeView" name="file_view_1"/>
+          <widget class="FileExplorerView" name="file_view_1"/>
          </widget>
         </item>
         <item>
@@ -48,7 +48,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="FileExplorerView" name="tableWidget"/>
+           <widget class="QTableWidget" name="tableWidget"/>
           </item>
          </layout>
         </item>
@@ -73,7 +73,7 @@
  <customwidgets>
   <customwidget>
    <class>FileExplorerView</class>
-   <extends>QTableWidget</extends>
+   <extends>QTreeView</extends>
    <header>src.components.FileExplorerView.h</header>
   </customwidget>
  </customwidgets>

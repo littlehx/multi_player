@@ -10,7 +10,7 @@ import subprocess
 import logging
 logger = logging.getLogger(__name__)
 # from src.common.log_utils import logger
-from src.config.public_config import BASE_DIR, SRC_DIR
+from src.config.env import BASE_DIR, SRC_DIR
 import src.common.log_utils
 
 if __name__ == '__main__':
